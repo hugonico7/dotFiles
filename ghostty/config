@@ -1,0 +1,13 @@
+
+#Font
+font-size = 18
+font-family = "Hack Nerd Font Mono"
+font-family-bold = "Hack Nerd Font Bold"
+font-family-italic = "Hack Nerd Font Italic"
+font-family-bold-italic = "Hack Nerd Font Bold Italic"
+
+#Cursor
+cursor-style = bar 
+shell-integration-features = no-cursor 
+
+theme = Dracula
