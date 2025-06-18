@@ -1,21 +1,47 @@
 return {
 	"folke/trouble.nvim",
+	version = "*",
 	dependencies = { "nvim-tree/nvim-web-devicons", "folke/todo-comments.nvim" },
-	cmd = "Trouble",
 	keys = {
 		{
 			"<leader>xw",
-			"<cmd>Trouble diagnostics toggle<CR>",
-			desc = "Open trouble workspace diagnostics",
+			"<cmd>Trouble diagnostics toggle workspace=true win.position=bottom<CR>",
+			desc = "Workspace Diagnostics (Trouble)",
 		},
 		{
 			"<leader>xd",
-			"<cmd>Trouble diagnostics toggle focus=false filter.buf=0<CR>",
-			desc = "Open trouble document diagnostics",
+			"<cmd>Trouble diagnostics toggle filter.buf=0 win.position=bottom<CR>",
+			desc = "Document Diagnostics (Trouble)",
+		},
+		{
+			"<leader>xf",
+			"<cmd>Telescope diagnostics<CR>",
+			desc = "Find Diagnostics (Telescope)",
 		},
 	},
-	config = function()
-		local trouble = require("trouble")
-		trouble.setup({})
-	end,
+	opts = {
+		position = "bottom",
+		height = 12,
+		mode = "diagnostics",
+		fold_open = "",
+		fold_closed = "",
+		group = true,
+		padding = true,
+		action_keys = {
+			close = "q",
+			cancel = "<esc>",
+			refresh = "r",
+			jump = { "<cr>", "<tab>" },
+			open_split = { "<c-x>" },
+			open_vsplit = { "<c-v>" },
+			toggle_fold = { "zA", "za" },
+			previous = "k",
+			next = "j",
+		},
+		auto_open = false,
+		auto_close = false,
+		auto_preview = true,
+		auto_jump = {},
+		use_diagnostic_signs = true,
+	},
 }

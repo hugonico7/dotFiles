@@ -1,7 +1,6 @@
 vim.cmd("let g:netrw_liststyle = 3")
 
 local opt = vim.opt
-local api = vim.api
 
 opt.relativenumber = true
 opt.number = true
@@ -21,6 +20,6 @@ opt.smartcase = true
 opt.cursorline = true
 
 -- Clipboard
-api.nvim_set_option("clipboard", "unnamedplus")
+opt.clipboard = "unnamedplus"
 
 vim.g.have_nerd_font = true

@@ -12,14 +12,15 @@ return {
 				html = { "prettier" },
 				json = { "prettier" },
 				yaml = { "prettier" },
-				markdown = { "markdownlint" },
 				graphql = { "prettier" },
 				liquid = { "prettier" },
+				markdown = { "markdownlint" },
 				lua = { "stylua" },
-				go = { "gci", "gofumpt", "goimports" },
 				python = { "isort", "black" },
 				bash = { "beautysh" },
+				go = { "gci", "gofumpt", "goimports" },
 			},
+
 			format_on_save = {
 				lsp_fallback = true,
 				async = false,

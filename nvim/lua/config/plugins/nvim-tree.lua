@@ -1,59 +1,64 @@
 return {
-	"nvim-tree/nvim-tree.lua",
-	dependencies = "nvim-tree/nvim-web-devicons",
+	"nvim-neo-tree/neo-tree.nvim",
+	branch = "v3.x",
+	dependencies = {
+		"nvim-lua/plenary.nvim",
+		"nvim-tree/nvim-web-devicons", -- optional, for file icons
+		"MunifTanjim/nui.nvim",
+	},
 	config = function()
-		local nvimtree = require("nvim-tree")
-
-		-- recommended settings from nvim-tree documentation
-		vim.g.loaded_netrw = 1
-		vim.g.loaded_netrwPlugin = 1
-
-		nvimtree.setup({
-			view = {
+		local home = vim.fn.expand("~")
+		require("neo-tree").setup({
+			close_if_last_window = true,
+			popup_border_style = "rounded",
+			enable_git_status = true,
+			enable_diagnostics = true,
+			filesystem = {
+				filtered_items = {
+					visible = true,
+					hide_dotfiles = false,
+					hide_gitignored = false,
+					never_show = {
+						".DS_Store",
+						"__pycache__",
+					},
+				},
+				follow_current_file = {
+					enabled = true,
+				},
+				hijack_netrw_behavior = "open_default",
+				use_libuv_file_watcher = true,
+				resolve_symlinks = true,
+				find_by_full_path_words = true,
+			},
+			window = {
+				name = "Explorer",
+				position = "left",
 				width = 35,
-				number = true,
-			},
-			-- change folder arrow icons
-			renderer = {
-				indent_markers = {
-					enable = true,
-				},
-				icons = {
-					glyphs = {
-						folder = {
-							arrow_closed = "→", -- arrow when folder is closed
-							arrow_open = "↓", -- arrow when folder is open
-						},
-					},
+				mappings = {
+					["<space>"] = "none", -- disable space
 				},
 			},
-			actions = {
-				open_file = {
-					window_picker = {
-						enable = true,
-					},
+			default_component_configs = {
+				indent = {
+					with_markers = true,
+					indent_size = 2,
+					padding = 1,
 				},
-			},
-			filters = {
-				custom = { ".DS_Store", "__pycache__" },
-			},
-			git = {
-				ignore = false,
+				icon = {
+					folder_closed = "→",
+					folder_open = "↓",
+					folder_empty = "⭘",
+					default = "",
+				},
 			},
 		})
 
-		-- set keymaps
-		local keymap = vim.keymap -- for conciseness
-
-		keymap.set("n", "<leader>ee", "<cmd>NvimTreeToggle<CR>", { desc = "Abrir el explorardor" }) -- toggle file explorer
-		keymap.set(
-			"n",
-			"<leader>ef",
-			"<cmd>NvimTreeFindFileToggle<CR>",
-			{ desc = "Abrir el explorador por el fichero actual" }
-		) -- toggle file explorer on current file
-		keymap.set("n", "<leader>ec", "<cmd>NvimTreeCollapse<CR>", { desc = "Colapasar las carpetas del explorador" }) -- collapse file explorer
-		keymap.set("n", "<leader>er", "<cmd>NvimTreeRefresh<CR>", { desc = "Refrescar explorador de archivos teams" }) -- refresh file explorer
-		keymap.set("n", "<leader>eb", "<cmd>NvimTreeFocus<CR>", { desc = "Volver al explorador de ficheros" }) -- focus back to file explorer
+		local keymap = vim.keymap
+		keymap.set("n", "<leader>ee", "<cmd>Neotree toggle<CR>", { desc = "Abrir/cerrar el explorador" })
+		keymap.set("n", "<leader>ef", "<cmd>Neotree reveal<CR>", { desc = "Revelar archivo actual en el explorador" })
+		keymap.set("n", "<leader>ec", "<cmd>Neotree close<CR>", { desc = "Cerrar el explorador" })
+		keymap.set("n", "<leader>er", "<cmd>Neotree refresh<CR>", { desc = "Refrescar el árbol de archivos" })
+		keymap.set("n", "<leader>eb", "<cmd>Neotree focus<CR>", { desc = "Enfocar el explorador" })
 	end,
 }

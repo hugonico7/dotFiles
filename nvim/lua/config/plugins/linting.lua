@@ -6,17 +6,18 @@ return {
 		lint.linters_by_ft = {
 			javascript = { "biomejs" },
 			typescript = { "biomejs" },
-			terraform = { "tflint", "tfsec" },
+			terraform = { "trivy" },
+			yaml = { "yamllint" },
+			json = { "jsonlint" },
+			sql = { "sqlfluff" },
+			markdown = { "markdownlint" },
+			makefile = { "checkmake" },
+			bash = { "shellcheck" },
 			go = { "golangcilint" },
 			python = { "ruff" },
-			markdown = { "markdownlint" },
-			bash = { "shellcheck" },
-			yaml = { "yamllint" },
-			-- yaml = { "yamllint", "cfn_lint" },
-			sql = { "sqlfluff" },
-			json = { "jsonlint" },
 		}
 
+		lint.linters.golangcilint.ignore_exitcode = true
 		local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
 
 		vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
