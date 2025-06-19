@@ -15,8 +15,8 @@ return {
 			"dockerls",
 			"docker_compose_language_service",
 			"gopls",
-			"yamlls",
 			"bashls",
+			"terraformls",
 			"markdown_oxide",
 			"ts_ls",
 		}
@@ -25,7 +25,7 @@ return {
 
 		local on_attach = function(client, bufnr)
 			local function opts(desc)
-				return { buffr = bufnr, desc = "LSP " .. desc }
+				return { buffer = bufnr, desc = "LSP " .. desc }
 			end
 			keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", { desc = "Show LSP References" })
 
@@ -58,48 +58,38 @@ return {
 			end
 		end
 
-		local capabilities = vim.lsp.protocol.make_client_capabilities()
+		local cmp_nvim_lsp = require("cmp_nvim_lsp")
+		local capabilities = cmp_nvim_lsp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 		for _, lsp in ipairs(servers) do
-			lspconfig[lsp].setup({
+			local ok, server = pcall(lspconfig[lsp].setup, {
 				on_init = on_init,
 				on_attach = on_attach,
 				capabilities = capabilities,
 			})
 		end
 
-		lspconfig.terraformls.setup({
-			on_init = on_init,
-			on_attach = on_attach,
-			capabilities = capabilities,
-			filetypes = { "terraform", "terraform-vars", "tf", "hcl" },
-		})
-
-		-- Only for terraformls
-		vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-			pattern = { "*.tf", "*.tfvars" },
-			callback = function()
-				vim.lsp.buf.format()
-			end,
-		})
-
-		local kubernetes_schema = require("kubernetes").yamlls_schema()
-
 		lspconfig.yamlls.setup({
 			on_init = on_init,
 			on_attach = on_attach,
 			capabilities = capabilities,
-			filetypes = { "yaml", "yaml.gitlab" },
+			filetypes = { "yaml", "yaml.gitlab", "yml" },
 			settings = {
 				yaml = {
 					schemas = {
-						["https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.27.1-standalone/all.json"] = "/*.k8s.yaml",
+						["https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.2/all.json"] = "*.k8s.yaml",
 					},
 					validate = true,
 					completion = true,
 					hover = true,
+					schemaStore = {
+						enable = false,
+					},
+					kubernetes = {
+						enable = false,
+					},
 				},
-				readhat = {
+				redhat = {
 					telemetry = {
 						enabled = false,
 					},
