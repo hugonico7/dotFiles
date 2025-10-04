@@ -19,29 +19,40 @@ return {
 			incremental_selection = {
 				enable = true,
 			},
+			-- List of parsers to install, organized by category for clarity
 			ensure_installed = {
+				-- Web
 				"html",
 				"css",
 				"javascript",
 				"typescript",
 				"tsx",
+
+				-- Infra / DevOps
 				"yaml",
 				"json",
 				"dockerfile",
 				"terraform",
 				"hcl",
+
+				-- Scripting / Shell
 				"bash",
 				"lua",
 				"vim",
 				"vimdoc",
+
+				-- General purpose
 				"go",
 				"python",
 				"sql",
 				"markdown",
 				"markdown_inline",
+
+				-- Git / Query
 				"gitignore",
 				"query",
 			},
+			-- Automatically install missing parsers when entering buffer
 			auto_install = true,
 			textobjects = {
 				select = {
